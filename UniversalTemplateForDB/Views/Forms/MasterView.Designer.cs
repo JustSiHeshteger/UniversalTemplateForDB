@@ -33,6 +33,7 @@ namespace UniversalTemplateForDB.Views.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Main = new System.Windows.Forms.TabPage();
+            this.dataGridView = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
             this.SearchTB = new System.Windows.Forms.TextBox();
             this.SearchBtn = new System.Windows.Forms.Button();
@@ -54,15 +55,18 @@ namespace UniversalTemplateForDB.Views.Forms
             this.SecondNameTB = new System.Windows.Forms.TextBox();
             this.ExperienceTB = new System.Windows.Forms.TextBox();
             this.IDTB = new System.Windows.Forms.TextBox();
-            this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.asd = new System.Windows.Forms.Label();
+            this.NameColumn = new System.Windows.Forms.TextBox();
+            this.DeleteColumnBtn = new System.Windows.Forms.Button();
+            this.AddColumnBtn = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.Main.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.Info.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -112,6 +116,15 @@ namespace UniversalTemplateForDB.Views.Forms
             this.Main.Text = "Список компаний";
             this.Main.UseVisualStyleBackColor = true;
             // 
+            // dataGridView
+            // 
+            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView.Location = new System.Drawing.Point(3, 33);
+            this.dataGridView.Name = "dataGridView";
+            this.dataGridView.Size = new System.Drawing.Size(624, 336);
+            this.dataGridView.TabIndex = 3;
+            // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.DimGray;
@@ -157,6 +170,10 @@ namespace UniversalTemplateForDB.Views.Forms
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.DimGray;
+            this.panel2.Controls.Add(this.asd);
+            this.panel2.Controls.Add(this.NameColumn);
+            this.panel2.Controls.Add(this.DeleteColumnBtn);
+            this.panel2.Controls.Add(this.AddColumnBtn);
             this.panel2.Controls.Add(this.DeleteBtn);
             this.panel2.Controls.Add(this.EditBtn);
             this.panel2.Controls.Add(this.AddBtn);
@@ -329,14 +346,45 @@ namespace UniversalTemplateForDB.Views.Forms
             this.IDTB.Size = new System.Drawing.Size(147, 22);
             this.IDTB.TabIndex = 0;
             // 
-            // dataGridView
+            // asd
             // 
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.Location = new System.Drawing.Point(3, 33);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(624, 336);
-            this.dataGridView.TabIndex = 3;
+            this.asd.AutoSize = true;
+            this.asd.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.asd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.asd.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.asd.Location = new System.Drawing.Point(10, 274);
+            this.asd.Name = "asd";
+            this.asd.Size = new System.Drawing.Size(155, 20);
+            this.asd.TabIndex = 8;
+            this.asd.Text = "Название стобца";
+            // 
+            // NameColumn
+            // 
+            this.NameColumn.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.NameColumn.Location = new System.Drawing.Point(10, 294);
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.Size = new System.Drawing.Size(180, 22);
+            this.NameColumn.TabIndex = 11;
+            // 
+            // DeleteColumnBtn
+            // 
+            this.DeleteColumnBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DeleteColumnBtn.Location = new System.Drawing.Point(10, 216);
+            this.DeleteColumnBtn.Name = "DeleteColumnBtn";
+            this.DeleteColumnBtn.Size = new System.Drawing.Size(180, 40);
+            this.DeleteColumnBtn.TabIndex = 10;
+            this.DeleteColumnBtn.Text = "Удалить столбец";
+            this.DeleteColumnBtn.UseVisualStyleBackColor = true;
+            // 
+            // AddColumnBtn
+            // 
+            this.AddColumnBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AddColumnBtn.Location = new System.Drawing.Point(10, 176);
+            this.AddColumnBtn.Name = "AddColumnBtn";
+            this.AddColumnBtn.Size = new System.Drawing.Size(180, 40);
+            this.AddColumnBtn.TabIndex = 9;
+            this.AddColumnBtn.Text = "Добавить столбец";
+            this.AddColumnBtn.UseVisualStyleBackColor = true;
             // 
             // MasterView
             // 
@@ -351,14 +399,15 @@ namespace UniversalTemplateForDB.Views.Forms
             this.panel1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.Main.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.Info.ResumeLayout(false);
             this.Info.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -391,5 +440,9 @@ namespace UniversalTemplateForDB.Views.Forms
         private System.Windows.Forms.Button CancelBtn;
         private System.Windows.Forms.Button SaveBtn;
         private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.Label asd;
+        private System.Windows.Forms.TextBox NameColumn;
+        private System.Windows.Forms.Button DeleteColumnBtn;
+        private System.Windows.Forms.Button AddColumnBtn;
     }
 }

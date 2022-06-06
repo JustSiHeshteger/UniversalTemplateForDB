@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace UniversalTemplateForDB.Presenters
         private readonly IMasterView _view;
         private readonly IMasterRepository _repository;
         private readonly BindingSource _bindingSource;
-        private IEnumerable<MasterModel> _masterList;
+        private DataTable _masterList;
 
         public MasterPresenter(IMasterView view, IMasterRepository repository)
         {
@@ -29,12 +30,32 @@ namespace UniversalTemplateForDB.Presenters
             this._view.DeleteEvent += DeleteMaster;
             this._view.SaveEvent += SaveMaster;
             this._view.CancelEvent += CancelAction;
+            this._view.AddColumnEvent += AddColumn;
+            this._view.DropColumnEvent += DropColumn;
 
             this._view.SetMasterListBindingSource(_bindingSource);
 
             LoadAllMasterList();
 
             this._view.Show();
+        }
+
+        private void AddColumn(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(_view.AddColumn))
+            {
+                _repository.AddColumn(_view.AddColumn);
+                LoadAllMasterList();
+            }
+        }
+
+        private void DropColumn(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(_view.AddColumn))
+            {
+                _repository.DropColumn(_view.AddColumn);
+                LoadAllMasterList();
+            }
         }
 
         private void LoadAllMasterList()
@@ -79,7 +100,7 @@ namespace UniversalTemplateForDB.Presenters
                 if (_bindingSource.Current == null)
                     return;
 
-                var item = (CompanyModel)_bindingSource.Current;
+                var item = (MasterModel)_bindingSource.Current;
                 _repository.Delete(item.Id);
                 _view.IsSuccessful = true;
                 LoadAllMasterList();

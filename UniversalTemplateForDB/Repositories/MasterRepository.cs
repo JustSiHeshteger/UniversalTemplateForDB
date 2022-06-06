@@ -88,9 +88,10 @@ namespace UniversalTemplateForDB.Repositories
             }
         }
 
-        public IEnumerable<MasterModel> GetAll()
+        public DataTable GetAll()
         {
-            var masterList = new List<MasterModel>();
+            DataTable dataTable = new DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
 
             try
             {
@@ -102,20 +103,8 @@ namespace UniversalTemplateForDB.Repositories
                         command.Connection = connection;
                         command.CommandText = "SELECT * FROM Master ORDER BY IdMaster DESC";
 
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                var masterModel = new MasterModel
-                                {
-                                    Id = (int)reader[0],
-                                    Name = reader[1].ToString(),
-                                    SecondName = reader[2].ToString(),
-                                    Experience = (int)reader[3]
-                                };
-                                masterList.Add(masterModel);
-                            }
-                        }
+                        sqlDataAdapter.SelectCommand = command;
+                        sqlDataAdapter.Fill(dataTable);
                     }
                 }
             }
@@ -124,15 +113,17 @@ namespace UniversalTemplateForDB.Repositories
                 MessageBox.Show(ex.Message, "Ошибка");
             }
 
-            return masterList;
+            return dataTable;
         }
 
-        public IEnumerable<MasterModel> GetByValue(string value)
+        public DataTable GetByValue(string value)
         {
-            var masterList = new List<MasterModel>();
             int idMaster = int.TryParse(value, out _) ? Convert.ToInt32(value) : 0;
             string name = value;
             string secondName = value;
+
+            DataTable dataTable = new DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
 
             try
             {
@@ -149,20 +140,8 @@ namespace UniversalTemplateForDB.Repositories
                         command.Parameters.Add("@name", SqlDbType.NVarChar).Value = name;
                         command.Parameters.Add("@secondName", SqlDbType.NVarChar).Value = secondName;
 
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                var masterModel = new MasterModel()
-                                {
-                                    Id = (int)reader[0],
-                                    Name = reader[1].ToString(),
-                                    SecondName = reader[2].ToString(),
-                                    Experience = (int)reader[3]
-                                };
-                                masterList.Add(masterModel);
-                            }
-                        }
+                        sqlDataAdapter.SelectCommand = command;
+                        sqlDataAdapter.Fill(dataTable);
                     }
                 }
             }
@@ -171,7 +150,49 @@ namespace UniversalTemplateForDB.Repositories
                 MessageBox.Show(ex.Message, "Ошибка");
             }
 
-            return masterList;
+            return dataTable;
+        }
+
+        public void AddColumn(string column)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    using (var command = new SqlCommand())
+                    {
+                        connection.Open();
+                        command.Connection = connection;
+                        command.CommandText = $"ALTER TABLE Master ADD {column} NVARCHAR(50) NULL";
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка");
+            }
+        }
+
+        public void DropColumn(string column)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    using (var command = new SqlCommand())
+                    {
+                        connection.Open();
+                        command.Connection = connection;
+                        command.CommandText = $"ALTER TABLE Master DROP COLUMN {column};";
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка");
+            }
         }
     }
 }

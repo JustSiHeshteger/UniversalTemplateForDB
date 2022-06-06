@@ -92,9 +92,10 @@ namespace UniversalTemplateForDB.Repositories
             }
         }
 
-        public IEnumerable<MaterialModel> GetAll()
+        public DataTable GetAll()
         {
-            var materialList = new List<MaterialModel>();
+            DataTable dataTable = new DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
 
             try
             {
@@ -106,21 +107,8 @@ namespace UniversalTemplateForDB.Repositories
                         command.Connection = connection;
                         command.CommandText = "SELECT * FROM Material ORDER BY IdMaterial DESC";
 
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                var materialModel = new MaterialModel
-                                {
-                                    IdMaterial = (int)reader[0],
-                                    IdProduct = (int)reader[1],
-                                    NameMaterial = reader[2].ToString(),
-                                    Price = (int)reader[3]
-                                };
-
-                                materialList.Add(materialModel);
-                            }
-                        }
+                        sqlDataAdapter.SelectCommand = command;
+                        sqlDataAdapter.Fill(dataTable);
                     }
                 }
             }
@@ -129,14 +117,16 @@ namespace UniversalTemplateForDB.Repositories
                 MessageBox.Show(ex.Message, "Ошибка");
             }
 
-            return materialList;
+            return dataTable;
         }
 
-        public IEnumerable<MaterialModel> GetByValue(string value)
+        public DataTable GetByValue(string value)
         {
-            var materialList = new List<MaterialModel>();
             int idMaterial = int.TryParse(value, out _) ? Convert.ToInt32(value) : 0;
             string nameMaterial = value;
+
+            DataTable dataTable = new DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
 
             try
             {
@@ -152,20 +142,8 @@ namespace UniversalTemplateForDB.Repositories
                         command.Parameters.Add("@idMaterial", SqlDbType.Int).Value = idMaterial;
                         command.Parameters.Add("@nameMaterial", SqlDbType.NVarChar).Value = nameMaterial;
 
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                var materialModel = new MaterialModel()
-                                {
-                                    IdMaterial = (int)reader[0],
-                                    IdProduct = (int)reader[1],
-                                    NameMaterial = reader[2].ToString(),
-                                    Price = (int)reader[3],
-                                };
-                                materialList.Add(materialModel);
-                            }
-                        }
+                        sqlDataAdapter.SelectCommand = command;
+                        sqlDataAdapter.Fill(dataTable);
                     }
                 }
             }
@@ -174,7 +152,49 @@ namespace UniversalTemplateForDB.Repositories
                 MessageBox.Show(ex.Message, "Ошибка");
             }
 
-            return materialList;
+            return dataTable;
+        }
+
+        public void AddColumn(string column)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    using (var command = new SqlCommand())
+                    {
+                        connection.Open();
+                        command.Connection = connection;
+                        command.CommandText = $"ALTER TABLE Material ADD {column} NVARCHAR(50) NULL";
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка");
+            }
+        }
+
+        public void DropColumn(string column)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    using (var command = new SqlCommand())
+                    {
+                        connection.Open();
+                        command.Connection = connection;
+                        command.CommandText = $"ALTER TABLE Material DROP COLUMN {column};";
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка");
+            }
         }
     }
 }

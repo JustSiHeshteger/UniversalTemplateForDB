@@ -94,9 +94,10 @@ namespace UniversalTemplateForDB.Repositories
             }
         }
 
-        public IEnumerable<ProductModel> GetAll()
+        public DataTable GetAll()
         {
-            var productList = new List<ProductModel>();
+            DataTable dataTable = new DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
 
             try
             {
@@ -108,21 +109,8 @@ namespace UniversalTemplateForDB.Repositories
                         command.Connection = connection;
                         command.CommandText = "SELECT * FROM Product ORDER BY IdProduct DESC";
 
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                var productModel = new ProductModel()
-                                {
-                                    Id = (int)reader[0],
-                                    NameProduct = reader[1].ToString(),
-                                    IdMaster = (int)reader[2],
-                                    IdCompany = (int)reader[3],
-                                    Info = reader[4].ToString(),
-                                };
-                                productList.Add(productModel);
-                            }
-                        }
+                        sqlDataAdapter.SelectCommand = command;
+                        sqlDataAdapter.Fill(dataTable);
                     }
                 }
             }
@@ -131,14 +119,16 @@ namespace UniversalTemplateForDB.Repositories
                 MessageBox.Show(ex.Message, "Ошибка");
             }
 
-            return productList;
+            return dataTable;
         }
 
-        public IEnumerable<ProductModel> GetByValue(string value)
+        public DataTable GetByValue(string value)
         {
-            var productList = new List<ProductModel>();
             int idProduct = int.TryParse(value, out _) ? Convert.ToInt32(value) : 0;
             string nameProduct = value;
+
+            DataTable dataTable = new DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
 
             try
             {
@@ -154,21 +144,8 @@ namespace UniversalTemplateForDB.Repositories
                         command.Parameters.Add("@idProduct", SqlDbType.Int).Value = idProduct;
                         command.Parameters.Add("@nameProduct", SqlDbType.NVarChar).Value = nameProduct;
 
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                var productModel = new ProductModel()
-                                {
-                                    Id = (int)reader[0],
-                                    NameProduct = reader[1].ToString(),
-                                    IdMaster = (int)reader[2],
-                                    IdCompany = (int)reader[3],
-                                    Info = reader[4].ToString(),
-                                };
-                                productList.Add(productModel);
-                            }
-                        }
+                        sqlDataAdapter.SelectCommand = command;
+                        sqlDataAdapter.Fill(dataTable);
                     }
                 }
             }
@@ -177,7 +154,49 @@ namespace UniversalTemplateForDB.Repositories
                 MessageBox.Show(ex.Message, "Ошибка");
             }
 
-            return productList;
+            return dataTable;
+        }
+
+        public void AddColumn(string column)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    using (var command = new SqlCommand())
+                    {
+                        connection.Open();
+                        command.Connection = connection;
+                        command.CommandText = $"ALTER TABLE Product ADD {column} NVARCHAR(50) NULL";
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка");
+            }
+        }
+
+        public void DropColumn(string column)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    using (var command = new SqlCommand())
+                    {
+                        connection.Open();
+                        command.Connection = connection;
+                        command.CommandText = $"ALTER TABLE Product DROP COLUMN {column};";
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка");
+            }
         }
     }
 }

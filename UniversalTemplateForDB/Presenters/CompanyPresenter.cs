@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Windows.Forms;
 using UniversalTemplateForDB.Models.Model;
 using UniversalTemplateForDB.Models.Repositories;
@@ -12,7 +13,7 @@ namespace UniversalTemplateForDB.Presenters
         private readonly ICompanyView _view;
         private readonly ICompanyRepository _repository;
         private readonly BindingSource _bindingSource;
-        private IEnumerable<CompanyModel> _companyList;
+        private DataTable _companyList;
 
         public CompanyPresenter(ICompanyView view, ICompanyRepository repository)
         {
@@ -26,12 +27,32 @@ namespace UniversalTemplateForDB.Presenters
             this._view.DeleteEvent += DeleteCompany;
             this._view.SaveEvent += SaveCompany;
             this._view.CancelEvent += CancelAction;
+            this._view.AddColumnEvent += AddColumn;
+            this._view.DropColumnEvent += DropColumn;
 
             this._view.SetCompanyListBindingSource(_bindingSource);
 
             LoadAllCompanyList();
 
             this._view.Show();
+        }
+
+        private void DropColumn(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(_view.AddColumn))
+            {
+                _repository.DropColumn(_view.AddColumn);
+                LoadAllCompanyList();
+            }
+        }
+
+        private void AddColumn(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(_view.AddColumn))
+            {
+                _repository.AddColumn(_view.AddColumn);
+                LoadAllCompanyList();
+            }
         }
 
         private void LoadAllCompanyList()

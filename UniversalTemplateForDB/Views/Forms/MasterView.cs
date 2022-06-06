@@ -75,6 +75,22 @@ namespace UniversalTemplateForDB.Views.Forms
                 tabControl1.TabPages.Add(Main);
                 tabControl1.TabPages.Remove(Info);
             };
+
+            AddColumnBtn.Click += delegate
+            {
+                if (!string.IsNullOrWhiteSpace(NameColumn.Text))
+                {
+                    AddColumnEvent?.Invoke(this, EventArgs.Empty);
+                }
+            };
+
+            DeleteColumnBtn.Click += delegate
+            {
+                if (!string.IsNullOrWhiteSpace(NameColumn.Text))
+                {
+                    DropColumnEvent?.Invoke(this, EventArgs.Empty);
+                }
+            };
         }
 
         public string MasterId 
@@ -117,6 +133,11 @@ namespace UniversalTemplateForDB.Views.Forms
             get => _message;
             set => _message = value;
         }
+        public string AddColumn 
+        { 
+            get => NameColumn.Text; 
+            set => NameColumn.Text = value; 
+        }
 
         public event EventHandler SearchEvent;
         public event EventHandler AddEvent;
@@ -124,6 +145,8 @@ namespace UniversalTemplateForDB.Views.Forms
         public event EventHandler DeleteEvent;
         public event EventHandler SaveEvent;
         public event EventHandler CancelEvent;
+        public event EventHandler AddColumnEvent;
+        public event EventHandler DropColumnEvent;
 
         public void SetMasterListBindingSource(BindingSource masterList)
         {

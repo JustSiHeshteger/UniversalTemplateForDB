@@ -17,6 +17,7 @@ namespace UniversalTemplateForDB.Views.Interfaces
         bool IsEdit { get; set; }
         bool IsSuccessful { get; set; }
         string Message { get; set; }
+        string AddColumn { get; set; }
 
         #endregion
 
@@ -29,6 +30,8 @@ namespace UniversalTemplateForDB.Views.Interfaces
         event EventHandler DeleteEvent;
         event EventHandler SaveEvent;
         event EventHandler CancelEvent;
+        event EventHandler AddColumnEvent;
+        event EventHandler DropColumnEvent;
 
         #endregion
 

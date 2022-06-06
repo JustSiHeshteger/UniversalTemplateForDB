@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using UniversalTemplateForDB.Models.Model;
 
 namespace UniversalTemplateForDB.Models.Repositories
@@ -8,7 +9,9 @@ namespace UniversalTemplateForDB.Models.Repositories
         void Add(MaterialModel companyModel);
         void Edit(MaterialModel companyModel);
         void Delete(int id);
-        IEnumerable<MaterialModel> GetAll();
-        IEnumerable<MaterialModel> GetByValue(string value); //Поиск по значению
+        DataTable GetAll();
+        DataTable GetByValue(string value); //Поиск по значению
+        void AddColumn(string name);
+        void DropColumn(string name);
     }
 }

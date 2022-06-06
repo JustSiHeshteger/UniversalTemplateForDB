@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Windows.Forms;
 using UniversalTemplateForDB.Models.Model;
 using UniversalTemplateForDB.Models.Repositories;
@@ -12,7 +13,7 @@ namespace UniversalTemplateForDB.Presenters
         private readonly IProductView _view;
         private readonly IProductRepository _repository;
         private readonly BindingSource _bindingSource;
-        private IEnumerable<ProductModel> _productList;
+        private DataTable _productList;
 
         public ProductPresenter(IProductView view, IProductRepository repository)
         {
@@ -26,12 +27,32 @@ namespace UniversalTemplateForDB.Presenters
             this._view.DeleteEvent += DeleteProduct;
             this._view.SaveEvent += SaveProduct;
             this._view.CancelEvent += CancelAction;
+            this._view.AddColumnEvent += AddColumn;
+            this._view.DropColumnEvent += DropColumn;
 
             this._view.SetProductListBindingSource(_bindingSource);
 
             LoadAllProductList();
 
             this._view.Show();
+        }
+
+        private void AddColumn(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(_view.AddColumn))
+            {
+                _repository.AddColumn(_view.AddColumn);
+                LoadAllProductList();
+            }
+        }
+
+        private void DropColumn(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(_view.AddColumn))
+            {
+                _repository.DropColumn(_view.AddColumn);
+                LoadAllProductList();
+            }
         }
 
         private void LoadAllProductList()

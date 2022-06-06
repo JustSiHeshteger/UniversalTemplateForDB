@@ -95,9 +95,10 @@ namespace UniversalTemplateForDB.Repositories
         /// Метод для считывания всех копманий
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<CompanyModel> GetAll()
+        public DataTable GetAll()
         {
-            var companyList = new List<CompanyModel>();
+            DataTable dataTable = new DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
 
             try
             {
@@ -109,21 +110,8 @@ namespace UniversalTemplateForDB.Repositories
                         command.Connection = connection;
                         command.CommandText = "SELECT * FROM Company ORDER BY IdCompany DESC";
 
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                var companyModel = new CompanyModel
-                                {
-                                    Id = (int)reader[0],
-                                    NameCompany = reader[1].ToString(),
-                                    Address = reader[2].ToString(),
-                                    Phone = (int)reader[3]
-                                };
-
-                                companyList.Add(companyModel);
-                            }
-                        }
+                        sqlDataAdapter.SelectCommand = command;
+                        sqlDataAdapter.Fill(dataTable);
                     }
                 }
             }
@@ -132,7 +120,7 @@ namespace UniversalTemplateForDB.Repositories
                 MessageBox.Show(ex.Message, "Ошибка");
             }
 
-            return companyList;
+            return dataTable;
         }
 
 
@@ -141,11 +129,13 @@ namespace UniversalTemplateForDB.Repositories
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public IEnumerable<CompanyModel> GetByValue(string value)
+        public DataTable GetByValue(string value)
         {
-            var companyList = new List<CompanyModel>();
             int companyId = int.TryParse(value, out _) ? Convert.ToInt32(value) : 0;
             string companyName = value;
+
+            DataTable dataTable = new DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
 
             try
             {
@@ -161,21 +151,8 @@ namespace UniversalTemplateForDB.Repositories
                         command.Parameters.Add("@id", SqlDbType.Int).Value = companyId;
                         command.Parameters.Add("@name", SqlDbType.NVarChar).Value = companyName;
 
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                var companyModel = new CompanyModel
-                                {
-                                    Id = (int)reader[0],
-                                    NameCompany = reader[1].ToString(),
-                                    Address = reader[2].ToString(),
-                                    Phone = (int)reader[3]
-                                };
-
-                                companyList.Add(companyModel);
-                            }
-                        }
+                        sqlDataAdapter.SelectCommand = command;
+                        sqlDataAdapter.Fill(dataTable);
                     }
                 }
             }
@@ -184,7 +161,49 @@ namespace UniversalTemplateForDB.Repositories
                 MessageBox.Show(ex.Message, "Ошибка");
             }
 
-            return companyList;
+            return dataTable;
+        }
+
+        public void AddColumn(string column)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    using (var command = new SqlCommand())
+                    {
+                        connection.Open();
+                        command.Connection = connection;
+                        command.CommandText = $"ALTER TABLE Company ADD {column} NVARCHAR(50) NULL";
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка");
+            }
+        }
+
+        public void DropColumn(string column)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    using (var command = new SqlCommand())
+                    {
+                        connection.Open();
+                        command.Connection = connection;
+                        command.CommandText = $"ALTER TABLE Company DROP COLUMN {column};";
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка");
+            }
         }
 
         #endregion

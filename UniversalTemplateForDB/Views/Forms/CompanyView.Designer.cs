@@ -39,6 +39,10 @@ namespace UniversalTemplateForDB.Views.Forms
             this.SearchBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.asd = new System.Windows.Forms.Label();
+            this.NameColumn = new System.Windows.Forms.TextBox();
+            this.DeleteColumnBtn = new System.Windows.Forms.Button();
+            this.AddColumnBtn = new System.Windows.Forms.Button();
             this.DeleteBtn = new System.Windows.Forms.Button();
             this.EditBtn = new System.Windows.Forms.Button();
             this.AddBtn = new System.Windows.Forms.Button();
@@ -169,6 +173,10 @@ namespace UniversalTemplateForDB.Views.Forms
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.DimGray;
+            this.panel2.Controls.Add(this.asd);
+            this.panel2.Controls.Add(this.NameColumn);
+            this.panel2.Controls.Add(this.DeleteColumnBtn);
+            this.panel2.Controls.Add(this.AddColumnBtn);
             this.panel2.Controls.Add(this.DeleteBtn);
             this.panel2.Controls.Add(this.EditBtn);
             this.panel2.Controls.Add(this.AddBtn);
@@ -179,6 +187,46 @@ namespace UniversalTemplateForDB.Views.Forms
             this.panel2.Padding = new System.Windows.Forms.Padding(10, 10, 10, 50);
             this.panel2.Size = new System.Drawing.Size(200, 366);
             this.panel2.TabIndex = 0;
+            // 
+            // asd
+            // 
+            this.asd.AutoSize = true;
+            this.asd.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.asd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.asd.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.asd.Location = new System.Drawing.Point(10, 274);
+            this.asd.Name = "asd";
+            this.asd.Size = new System.Drawing.Size(155, 20);
+            this.asd.TabIndex = 1;
+            this.asd.Text = "Название стобца";
+            // 
+            // NameColumn
+            // 
+            this.NameColumn.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.NameColumn.Location = new System.Drawing.Point(10, 294);
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.Size = new System.Drawing.Size(180, 22);
+            this.NameColumn.TabIndex = 7;
+            // 
+            // DeleteColumnBtn
+            // 
+            this.DeleteColumnBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DeleteColumnBtn.Location = new System.Drawing.Point(10, 216);
+            this.DeleteColumnBtn.Name = "DeleteColumnBtn";
+            this.DeleteColumnBtn.Size = new System.Drawing.Size(180, 40);
+            this.DeleteColumnBtn.TabIndex = 6;
+            this.DeleteColumnBtn.Text = "Удалить столбец";
+            this.DeleteColumnBtn.UseVisualStyleBackColor = true;
+            // 
+            // AddColumnBtn
+            // 
+            this.AddColumnBtn.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AddColumnBtn.Location = new System.Drawing.Point(10, 176);
+            this.AddColumnBtn.Name = "AddColumnBtn";
+            this.AddColumnBtn.Size = new System.Drawing.Size(180, 40);
+            this.AddColumnBtn.TabIndex = 5;
+            this.AddColumnBtn.Text = "Добавить столбец";
+            this.AddColumnBtn.UseVisualStyleBackColor = true;
             // 
             // DeleteBtn
             // 
@@ -357,6 +405,7 @@ namespace UniversalTemplateForDB.Views.Forms
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.Info.ResumeLayout(false);
@@ -393,5 +442,9 @@ namespace UniversalTemplateForDB.Views.Forms
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button CancelBtn;
         private System.Windows.Forms.Button SaveBtn;
+        private System.Windows.Forms.Button DeleteColumnBtn;
+        private System.Windows.Forms.Button AddColumnBtn;
+        private System.Windows.Forms.Label asd;
+        private System.Windows.Forms.TextBox NameColumn;
     }
 }

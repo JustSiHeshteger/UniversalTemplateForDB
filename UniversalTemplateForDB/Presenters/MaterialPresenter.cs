@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace UniversalTemplateForDB.Presenters
         private readonly IMaterialView _view;
         private readonly IMaterialRepository _repository;
         private readonly BindingSource _bindingSource;
-        private IEnumerable<MaterialModel> _materialList;
+        private DataTable _materialList;
 
         public MaterialPresenter(IMaterialView view, IMaterialRepository repository)
         {
@@ -29,12 +30,32 @@ namespace UniversalTemplateForDB.Presenters
             this._view.DeleteEvent += DeleteMaterial;
             this._view.SaveEvent += SaveMaterial;
             this._view.CancelEvent += CancelAction;
+            this._view.AddColumnEvent += AddColumn;
+            this._view.DropColumnEvent += DropColumn;
 
             this._view.SetMaterialListBindingSource(_bindingSource);
 
             LoadAllMaterialList();
 
             this._view.Show();
+        }
+
+        private void AddColumn(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(_view.AddColumn))
+            {
+                _repository.AddColumn(_view.AddColumn);
+                LoadAllMaterialList();
+            }
+        }
+
+        private void DropColumn(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(_view.AddColumn))
+            {
+                _repository.DropColumn(_view.AddColumn);
+                LoadAllMaterialList();
+            }
         }
 
         private void LoadAllMaterialList()
